@@ -1,8 +1,7 @@
 import { useMemo, useState } from 'react';
 import { SlidersHorizontal, Search } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
 import { useAsync } from '@/lib/useAsync';
-import type { Category, Item } from '@/types';
+import { MOCK_CATEGORIES, MOCK_ITEMS } from '@/lib/mockData';
 import ItemCard from '@/components/ItemCard';
 import { Spinner, ErrorState, EmptyState } from '@/components/States';
 import SectionHeading from '@/components/SectionHeading';
@@ -13,15 +12,9 @@ export default function ItemsPage() {
   const [sort, setSort] = useState<'new' | 'low' | 'high' | 'rating'>('new');
 
   const { data, error, loading } = useAsync(async () => {
-    const [cats, items] = await Promise.all([
-      supabase.from('categories').select('id,name,slug').order('name'),
-      supabase.from('items').select('*, category:categories(slug,name)').order('created_at'),
-    ]);
-    if (cats.error) throw cats.error;
-    if (items.error) throw items.error;
     return {
-      categories: cats.data as Pick<Category, 'id' | 'name' | 'slug'>[],
-      items: items.data as (Item & { category: { slug: string; name: string } | null })[],
+      categories: MOCK_CATEGORIES,
+      items: MOCK_ITEMS,
     };
   }, []);
 

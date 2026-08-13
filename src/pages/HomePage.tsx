@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import { ArrowRight, Star, Sparkles, ShieldCheck, Truck, Heart, ShoppingBag } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
 import { useAsync } from '@/lib/useAsync';
 import { useNavigate } from '@/lib/router';
-import type { Category, Item, Service, Course } from '@/types';
+import { MOCK_CATEGORIES, MOCK_ITEMS, MOCK_SERVICES, MOCK_COURSES } from '@/lib/mockData';
 import CategoryCard from '@/components/CategoryCard';
 import ItemCard from '@/components/ItemCard';
 import ServiceCard from '@/components/ServiceCard';
@@ -14,28 +13,18 @@ import { Spinner, ErrorState } from '@/components/States';
 export default function HomePage() {
   const navigate = useNavigate();
   const { data, error, loading } = useAsync(async () => {
-    const [categories, items, services, courses] = await Promise.all([
-      supabase.from('categories').select('*').order('created_at'),
-      supabase.from('items').select('*, category:categories(id,slug,name)').order('created_at'),
-      supabase.from('services').select('*').order('created_at').limit(3),
-      supabase.from('courses').select('*').order('created_at').limit(3),
-    ]);
-    if (categories.error) throw categories.error;
-    if (items.error) throw items.error;
-    if (services.error) throw services.error;
-    if (courses.error) throw courses.error;
-
-    const allItems = items.data as (Item & { category: { id: string; slug: string; name: string } | null })[];
-    const grouped = (categories.data as Category[]).map((c) => ({
+    const categories = MOCK_CATEGORIES;
+    const allItems = MOCK_ITEMS;
+    const grouped = categories.map((c) => ({
       category: c,
       items: allItems.filter((it) => it.category_id === c.id),
     }));
 
     return {
-      categories: categories.data as Category[],
+      categories,
       grouped,
-      services: services.data as Service[],
-      courses: courses.data as Course[],
+      services: MOCK_SERVICES.slice(0, 3),
+      courses: MOCK_COURSES.slice(0, 3),
     };
   }, []);
 
