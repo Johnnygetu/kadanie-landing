@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { ArrowLeft, Star, Check, ShoppingBag, Truck, ShieldCheck, RefreshCw } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
 import { useAsync } from '@/lib/useAsync';
 import { useNavigate } from '@/lib/router';
-import type { Item } from '@/types';
+import { MOCK_ITEMS } from '@/lib/mockData';
 import { formatPrice } from '@/lib/format';
 import { Spinner, ErrorState } from '@/components/States';
 
@@ -14,10 +13,9 @@ export default function ItemDetailPage({ slug }: { slug: string }) {
   const [added, setAdded] = useState(false);
 
   const { data, error, loading } = useAsync(async () => {
-    const { data, error } = await supabase.from('items').select('*').eq('slug', slug).maybeSingle();
-    if (error) throw error;
-    if (!data) throw new Error('Item not found');
-    return data as Item;
+    const item = MOCK_ITEMS.find((it) => it.slug === slug);
+    if (!item) throw new Error('Item not found');
+    return item;
   }, [slug]);
 
   if (loading) return <div className="pt-32"><Spinner /></div>;

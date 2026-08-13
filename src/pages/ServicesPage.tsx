@@ -1,8 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Search, SlidersHorizontal } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
 import { useAsync } from '@/lib/useAsync';
-import type { Category, Service } from '@/types';
+import { MOCK_CATEGORIES, MOCK_SERVICES } from '@/lib/mockData';
 import ServiceCard from '@/components/ServiceCard';
 import { Spinner, ErrorState, EmptyState } from '@/components/States';
 import SectionHeading from '@/components/SectionHeading';
@@ -13,15 +12,9 @@ export default function ServicesPage() {
   const [sort, setSort] = useState<'new' | 'low' | 'high' | 'rating'>('new');
 
   const { data, error, loading } = useAsync(async () => {
-    const [cats, services] = await Promise.all([
-      supabase.from('categories').select('id,name,slug').order('name'),
-      supabase.from('services').select('*, category:categories(slug,name)').order('created_at'),
-    ]);
-    if (cats.error) throw cats.error;
-    if (services.error) throw services.error;
     return {
-      categories: cats.data as Pick<Category, 'id' | 'name' | 'slug'>[],
-      services: services.data as (Service & { category: { slug: string; name: string } | null })[],
+      categories: MOCK_CATEGORIES,
+      services: MOCK_SERVICES,
     };
   }, []);
 

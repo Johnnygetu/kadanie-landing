@@ -1,8 +1,7 @@
 import { ArrowRight } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
 import { useAsync } from '@/lib/useAsync';
 import { useNavigate } from '@/lib/router';
-import type { Category, Course } from '@/types';
+import { MOCK_CATEGORIES, MOCK_COURSES } from '@/lib/mockData';
 import CategoryCard from '@/components/CategoryCard';
 import CourseCard from '@/components/CourseCard';
 import { Spinner, ErrorState } from '@/components/States';
@@ -11,15 +10,9 @@ import SectionHeading from '@/components/SectionHeading';
 export default function CategoriesPage() {
   const navigate = useNavigate();
   const { data, error, loading } = useAsync(async () => {
-    const [cats, courses] = await Promise.all([
-      supabase.from('categories').select('*').order('created_at'),
-      supabase.from('courses').select('*').order('created_at').limit(3),
-    ]);
-    if (cats.error) throw cats.error;
-    if (courses.error) throw courses.error;
     return {
-      categories: cats.data as Category[],
-      courses: courses.data as Course[],
+      categories: MOCK_CATEGORIES,
+      courses: MOCK_COURSES.slice(0, 3),
     };
   }, []);
 

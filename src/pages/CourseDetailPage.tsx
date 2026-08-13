@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { ArrowLeft, Clock, GraduationCap, Users, Check, Star, BookOpen, Award, Sparkles } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
 import { useAsync } from '@/lib/useAsync';
 import { useNavigate } from '@/lib/router';
-import type { Course } from '@/types';
+import { MOCK_COURSES } from '@/lib/mockData';
 import { formatPrice } from '@/lib/format';
 import { Spinner, ErrorState } from '@/components/States';
 
@@ -12,13 +11,11 @@ export default function CourseDetailPage({ slug }: { slug: string }) {
   const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' });
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
-  const [err, setErr] = useState<string | null>(null);
 
   const { data, error, loading } = useAsync(async () => {
-    const { data, error } = await supabase.from('courses').select('*').eq('slug', slug).maybeSingle();
-    if (error) throw error;
-    if (!data) throw new Error('Course not found');
-    return data as Course;
+    const course = MOCK_COURSES.find((c) => c.slug === slug);
+    if (!course) throw new Error('Course not found');
+    return course;
   }, [slug]);
 
   if (loading) return <div className="pt-32"><Spinner /></div>;
@@ -29,23 +26,11 @@ export default function CourseDetailPage({ slug }: { slug: string }) {
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
-    setErr(null);
     setSubmitting(true);
-    try {
-      const { error } = await supabase.from('registrations').insert({
-        course_id: course.id,
-        full_name: form.name,
-        email: form.email,
-        phone: form.phone,
-        message: form.message,
-      });
-      if (error) throw error;
-      setDone(true);
-    } catch (e: unknown) {
-      setErr(e instanceof Error ? e.message : 'Could not complete your registration.');
-    } finally {
-      setSubmitting(false);
-    }
+    // Simulate brief mock submission delay
+    await new Promise((resolve) => setTimeout(resolve, 600));
+    setSubmitting(false);
+    setDone(true);
   }
 
   return (
@@ -150,7 +135,6 @@ export default function CourseDetailPage({ slug }: { slug: string }) {
                   <input required type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="Email address" className="input" />
                   <input value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder="Phone (optional)" className="input" />
                   <textarea value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} rows={2} placeholder="Anything we should know? (optional)" className="input resize-none" />
-                  {err && <p className="text-sm text-wine-700 bg-wine-700/10 rounded-xl px-4 py-2">{err}</p>}
                   <button
                     type="submit"
                     disabled={submitting}

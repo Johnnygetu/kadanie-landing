@@ -1,9 +1,8 @@
 import { useMemo, useState } from 'react';
 import { ArrowLeft, Package, Wand2 } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
 import { useAsync } from '@/lib/useAsync';
 import { useNavigate } from '@/lib/router';
-import type { Category, Item, Service } from '@/types';
+import { MOCK_CATEGORIES, MOCK_ITEMS, MOCK_SERVICES } from '@/lib/mockData';
 import ItemCard from '@/components/ItemCard';
 import ServiceCard from '@/components/ServiceCard';
 import { Spinner, ErrorState, EmptyState } from '@/components/States';
@@ -13,25 +12,16 @@ export default function CategoryDetailPage({ slug }: { slug: string }) {
   const [tab, setTab] = useState<'items' | 'services'>('items');
 
   const { data, error, loading } = useAsync(async () => {
-    const { data: cat, error: catErr } = await supabase
-      .from('categories')
-      .select('*')
-      .eq('slug', slug)
-      .maybeSingle();
-    if (catErr) throw catErr;
+    const cat = MOCK_CATEGORIES.find((c) => c.slug === slug);
     if (!cat) throw new Error('Category not found');
 
-    const [itemsRes, servicesRes] = await Promise.all([
-      supabase.from('items').select('*').eq('category_id', cat.id).order('created_at'),
-      supabase.from('services').select('*').eq('category_id', cat.id).order('created_at'),
-    ]);
-    if (itemsRes.error) throw itemsRes.error;
-    if (servicesRes.error) throw servicesRes.error;
+    const items = MOCK_ITEMS.filter((i) => i.category_id === cat.id || i.category?.slug === cat.slug);
+    const services = MOCK_SERVICES.filter((s) => s.category_id === cat.id || s.category?.slug === cat.slug);
 
     return {
-      category: cat as Category,
-      items: itemsRes.data as Item[],
-      services: servicesRes.data as Service[],
+      category: cat,
+      items,
+      services,
     };
   }, [slug]);
 

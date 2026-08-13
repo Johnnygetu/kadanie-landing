@@ -1,8 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Search } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
 import { useAsync } from '@/lib/useAsync';
-import type { Course } from '@/types';
+import { MOCK_COURSES } from '@/lib/mockData';
 import CourseCard from '@/components/CourseCard';
 import { Spinner, ErrorState, EmptyState } from '@/components/States';
 import SectionHeading from '@/components/SectionHeading';
@@ -12,9 +11,7 @@ export default function CoursesPage() {
   const [level, setLevel] = useState<string>('all');
 
   const { data, error, loading } = useAsync(async () => {
-    const { data, error } = await supabase.from('courses').select('*').order('created_at');
-    if (error) throw error;
-    return data as Course[];
+    return MOCK_COURSES;
   }, []);
 
   const filtered = useMemo(() => {
