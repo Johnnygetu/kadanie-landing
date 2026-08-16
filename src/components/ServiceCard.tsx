@@ -1,4 +1,4 @@
-import { Star, Clock, ArrowUpRight } from 'lucide-react';
+import { Clock, ArrowUpRight } from 'lucide-react';
 import type { Service } from '@/types';
 import { formatPrice } from '@/lib/format';
 import { useNavigate } from '@/lib/router';
@@ -28,14 +28,8 @@ export default function ServiceCard({ service }: { service: Service }) {
         </span>
       </div>
       <div className="flex flex-col flex-1 p-5">
-        <div className="flex items-center gap-3 text-xs">
-          <span className="flex items-center gap-1 text-wine-600">
-            <Star className="h-3.5 w-3.5 fill-wine-600" />
-            <span className="font-semibold">{service.rating.toFixed(1)}</span>
-          </span>
-          <span className="flex items-center gap-1 text-wine-900/50">
-            <Clock className="h-3.5 w-3.5" /> {service.duration}
-          </span>
+        <div className="flex items-center gap-1 text-xs text-wine-900/50">
+          <Clock className="h-3.5 w-3.5" /> {service.duration}
         </div>
         <h3 className="mt-2 font-serif text-lg font-semibold text-wine-900 leading-snug">
           {service.name}

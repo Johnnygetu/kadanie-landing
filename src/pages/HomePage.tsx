@@ -208,9 +208,9 @@ function Hero() {
   const navigate = useNavigate();
   const [idx, setIdx] = useState(0);
   const slides = [
-    'https://images.pexels.com/photos/1444442/pexels-photo-1444442.jpeg?auto=compress&cs=tinysrgb&w=1600',
-    'https://images.pexels.com/photos/1779415/pexels-photo-1779415.jpeg?auto=compress&cs=tinysrgb&w=1600',
-    'https://images.pexels.com/photos/1303081/pexels-photo-1303081.jpeg?auto=compress&cs=tinysrgb&w=1600',
+    'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1600&q=80',
+    'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=1600&q=80',
+    'https://images.unsplash.com/photo-1531058020387-3be344556be6?auto=format&fit=crop&w=1600&q=80',
   ];
 
   useEffect(() => {
@@ -233,9 +233,7 @@ function Hero() {
 
       <div className="relative h-full container-px max-w-7xl mx-auto flex flex-col justify-center">
         <div className="max-w-2xl animate-fade-up">
-          <span className="inline-flex items-center gap-2 rounded-full bg-cream-100/15 backdrop-blur-sm border border-cream-100/20 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-cream-100">
-            <Sparkles className="h-4 w-4" /> Kadanie Decore
-          </span>
+
           <h1 className="mt-5 font-serif text-4xl sm:text-6xl lg:text-7xl font-semibold text-cream-100 leading-[1.05] text-balance">
             Beautiful spaces, <br />
             <span className="italic text-cream-200">unforgettable</span> moments.
@@ -295,7 +293,7 @@ function Hero() {
 function TrustBar() {
   const items = [
     { icon: ShieldCheck, title: 'Quality assured', text: 'Hand-checked pieces' },
-    { icon: Truck, title: 'Free delivery', text: 'On orders over $75' },
+    { icon: Truck, title: 'Free delivery', text: 'On orders over 750 ETB' },
     { icon: Heart, title: 'Loved by 2,400+', text: 'Couples & hosts' },
     { icon: Sparkles, title: 'Expert styling', text: 'By working pros' },
   ];

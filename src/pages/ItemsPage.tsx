@@ -46,9 +46,19 @@ export default function ItemsPage() {
         align="center"
       />
 
+      {/* Category chips */}
+      {data && (
+        <div className="mt-10 flex flex-wrap justify-center gap-2 no-scrollbar overflow-x-auto pb-1">
+          <Chip active={cat === 'all'} onClick={() => setCat('all')}>All</Chip>
+          {data.categories.map((c) => (
+            <Chip key={c.slug} active={cat === c.slug} onClick={() => setCat(c.slug)}>{c.name}</Chip>
+          ))}
+        </div>
+      )}
+
       {/* Toolbar */}
-      <div className="mt-10 flex flex-col lg:flex-row gap-4 lg:items-center lg:justify-between">
-        <div className="relative flex-1 max-w-md">
+      <div className="mt-6 flex flex-col sm:flex-row gap-4 sm:gap-6 items-center justify-center">
+        <div className="relative w-full max-w-2xl">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-wine-900/40" />
           <input
             value={q}
@@ -57,7 +67,7 @@ export default function ItemsPage() {
             className="w-full rounded-full bg-cream-50 border border-wine-700/15 pl-11 pr-4 py-3 text-sm text-wine-900 placeholder:text-wine-900/40 focus:outline-none focus:ring-2 focus:ring-wine-700/30"
           />
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 shrink-0">
           <SlidersHorizontal className="h-4 w-4 text-wine-900/50" />
           <select
             value={sort}
@@ -71,16 +81,6 @@ export default function ItemsPage() {
           </select>
         </div>
       </div>
-
-      {/* Category chips */}
-      {data && (
-        <div className="mt-5 flex flex-wrap gap-2 no-scrollbar overflow-x-auto pb-1">
-          <Chip active={cat === 'all'} onClick={() => setCat('all')}>All</Chip>
-          {data.categories.map((c) => (
-            <Chip key={c.slug} active={cat === c.slug} onClick={() => setCat(c.slug)}>{c.name}</Chip>
-          ))}
-        </div>
-      )}
 
       <div className="mt-10">
         {loading ? (

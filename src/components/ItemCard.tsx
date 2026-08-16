@@ -1,4 +1,4 @@
-import { Star, ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import type { Item } from '@/types';
 import { formatPrice } from '@/lib/format';
 import { useNavigate } from '@/lib/router';
@@ -28,12 +28,7 @@ export default function ItemCard({ item }: { item: Item }) {
         </span>
       </div>
       <div className="flex flex-col flex-1 p-5">
-        <div className="flex items-center gap-1 text-wine-600 text-xs">
-          <Star className="h-3.5 w-3.5 fill-wine-600" />
-          <span className="font-semibold">{item.rating.toFixed(1)}</span>
-          <span className="text-wine-900/50">({item.reviews_count})</span>
-        </div>
-        <h3 className="mt-2 font-serif text-lg font-semibold text-wine-900 leading-snug">
+        <h3 className="font-serif text-lg font-semibold text-wine-900 leading-snug">
           {item.name}
         </h3>
         <p className="mt-1.5 text-sm text-wine-900/60 line-clamp-2 flex-1">{item.description}</p>

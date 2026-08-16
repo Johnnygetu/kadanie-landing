@@ -105,7 +105,7 @@ export default function ItemDetailPage({ slug }: { slug: string }) {
           {/* Trust row */}
           <div className="mt-8 grid grid-cols-3 gap-3">
             {[
-              { icon: Truck, t: 'Free delivery', s: 'Over $75' },
+              { icon: Truck, t: 'Free delivery', s: 'Over 750 ETB' },
               { icon: ShieldCheck, t: 'Quality assured', s: 'Hand-checked' },
               { icon: RefreshCw, t: 'Easy returns', s: '14 days' },
             ].map((r) => (
