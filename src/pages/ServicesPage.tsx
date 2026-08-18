@@ -25,7 +25,7 @@ export default function ServicesPage() {
     if (q.trim()) {
       const t = q.toLowerCase();
       list = list.filter(
-        (s) => s.name.toLowerCase().includes(t) || s.description.toLowerCase().includes(t)
+        (s) => (s.service_name || s.name || '').toLowerCase().includes(t) || s.description.toLowerCase().includes(t)
       );
     }
     list = [...list].sort((a, b) => {

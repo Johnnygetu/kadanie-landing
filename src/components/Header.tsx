@@ -8,7 +8,6 @@ const links = [
   { label: 'Items', path: '/items' },
   { label: 'Services', path: '/services' },
   { label: 'Courses', path: '/courses' },
-  { label: 'About', path: '/about' },
 ];
 
 export default function Header() {

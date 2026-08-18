@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ArrowLeft, Star, Check, Clock, Calendar, Users, Phone, Mail, User } from 'lucide-react';
+import { ArrowLeft, Check, Clock, Phone, User, Truck, CheckCircle2, ShieldAlert, MessageCircle, MapPin } from 'lucide-react';
 import { useAsync } from '@/lib/useAsync';
 import { useNavigate } from '@/lib/router';
 import { MOCK_SERVICES } from '@/lib/mockData';
@@ -8,187 +8,212 @@ import { Spinner, ErrorState } from '@/components/States';
 
 export default function ServiceDetailPage({ slug }: { slug: string }) {
   const navigate = useNavigate();
-  const [active, setActive] = useState(0);
-  const [form, setForm] = useState({ name: '', email: '', date: '', guests: '', notes: '' });
-  const [submitting, setSubmitting] = useState(false);
-  const [done, setDone] = useState(false);
+  const [activeImg, setActiveImg] = useState(0);
 
-  const { data, error, loading } = useAsync(async () => {
-    const service = MOCK_SERVICES.find((s) => s.slug === slug);
-    if (!service) throw new Error('Service not found');
-    return service;
+  const { data: service, error, loading } = useAsync(async () => {
+    const srv = MOCK_SERVICES.find((s) => s.slug === slug);
+    if (!srv) throw new Error('Service not found');
+    return srv;
   }, [slug]);
 
   if (loading) return <div className="pt-32"><Spinner /></div>;
-  if (error || !data) return <div className="pt-32"><ErrorState message={error ?? 'Could not load this service.'} /></div>;
+  if (error || !service) return <div className="pt-32"><ErrorState message={error ?? 'Could not load this service.'} /></div>;
 
-  const service = data;
-  const gallery = service.gallery.length ? service.gallery : [service.image_url];
-
-  async function submit(e: React.FormEvent) {
-    e.preventDefault();
-    setSubmitting(true);
-    // Simulate brief mock submission delay
-    await new Promise((resolve) => setTimeout(resolve, 600));
-    setSubmitting(false);
-    setDone(true);
-  }
+  const serviceName = service.service_name || service.name || 'Service';
+  const mainImg = service.main_image || service.image_url || '';
+  const secondaryImages = service.images || service.gallery || [];
+  const gallery = secondaryImages.length ? secondaryImages : [mainImg];
+  const durationText = service.duration_days
+    ? `${service.duration_days} ${service.duration_days === 1 ? 'day' : 'days'} validity`
+    : service.duration || 'Flexible duration';
 
   return (
-    <div className="pt-28 pb-10 container-px max-w-7xl mx-auto">
-      <button
-        onClick={() => navigate('/services')}
-        className="inline-flex items-center gap-2 text-sm text-wine-900/60 hover:text-wine-700 transition-colors mb-6"
-      >
-        <ArrowLeft className="h-4 w-4" /> Back to services
-      </button>
+    <div className="pt-24 pb-20 bg-white min-h-screen">
+      <div className="container-px max-w-6xl mx-auto">
+        
+        {/* Top Navigation */}
+        <button
+          onClick={() => navigate('/services')}
+          className="inline-flex items-center gap-2 text-sm font-medium text-wine-900/60 hover:text-wine-700 transition-colors mb-8"
+        >
+          <ArrowLeft className="h-4 w-4" /> Back to Services
+        </button>
 
-      <div className="grid lg:grid-cols-2 gap-10">
-        {/* Gallery */}
-        <div>
-          <div className="relative aspect-[4/3] rounded-3xl overflow-hidden shadow-card">
-            <img src={gallery[active]} alt={service.name} className="h-full w-full object-cover animate-fade-in" key={active} />
-            {service.tag && (
-              <span className="absolute top-4 left-4 rounded-full bg-wine-700 px-3 py-1 text-xs font-semibold text-cream-100 shadow">
+        {/* Page Header */}
+        <div className="mb-8">
+          {service.tag && (
+            <div className="mb-3">
+              <span className="rounded-full bg-wine-50 text-wine-700 px-3 py-1 text-sm font-semibold border border-wine-100">
                 {service.tag}
               </span>
-            )}
-          </div>
-          {gallery.length > 1 && (
-            <div className="mt-4 flex gap-3">
-              {gallery.map((g, i) => (
-                <button
-                  key={i}
-                  onClick={() => setActive(i)}
-                  className={`h-20 w-20 rounded-xl overflow-hidden border-2 transition-all ${
-                    active === i ? 'border-wine-700' : 'border-transparent opacity-70 hover:opacity-100'
-                  }`}
-                >
-                  <img src={g} alt="" className="h-full w-full object-cover" />
-                </button>
-              ))}
             </div>
           )}
+          <h1 className="font-serif text-4xl md:text-5xl font-semibold text-wine-900 tracking-tight leading-tight">
+            {serviceName}
+          </h1>
         </div>
 
-        {/* Info */}
-        <div>
-          <div className="flex flex-wrap items-center gap-4 text-sm">
-            <span className="flex items-center gap-1.5 text-wine-600">
-              <Star className="h-4 w-4 fill-wine-600" />
-              <span className="font-semibold">{service.rating.toFixed(1)}</span>
-              <span className="text-wine-900/50">· {service.reviews_count} reviews</span>
-            </span>
-            <span className="flex items-center gap-1.5 text-wine-900/60">
-              <Clock className="h-4 w-4" /> {service.duration}
-            </span>
-          </div>
-          <h1 className="mt-2 font-serif text-3xl sm:text-4xl font-semibold text-wine-900">{service.name}</h1>
-          <p className="mt-4 text-wine-900/70 leading-relaxed">{service.description}</p>
-
-          <div className="mt-6 flex items-baseline gap-3">
-            <span className="font-serif text-4xl font-semibold text-wine-700">{formatPrice(service.price)}</span>
-            <span className="text-sm text-wine-900/50">starting price</span>
-          </div>
-
-          {service.features.length > 0 && (
-            <ul className="mt-6 space-y-2.5">
-              {service.features.map((f) => (
-                <li key={f} className="flex items-start gap-2.5 text-sm text-wine-900/80">
-                  <Check className="h-4 w-4 mt-0.5 text-wine-600 shrink-0" /> {f}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-      </div>
-
-      {/* Enquiry form */}
-      <div className="mt-14 grid lg:grid-cols-5 gap-8">
-        <div className="lg:col-span-2">
-          <h2 className="font-serif text-2xl font-semibold text-wine-900">Request this service</h2>
-          <p className="mt-2 text-sm text-wine-900/60 leading-relaxed">
-            Tell us about your event and our stylists will get back to you within 24 hours
-            with a tailored quote and availability.
-          </p>
-          <div className="mt-6 space-y-3 text-sm text-wine-900/70">
-            <p className="flex items-center gap-2"><Calendar className="h-4 w-4 text-wine-600" /> Flexible dates, subject to availability</p>
-            <p className="flex items-center gap-2"><Users className="h-4 w-4 text-wine-600" /> Any scale — intimate to grand</p>
-            <p className="flex items-center gap-2"><Check className="h-4 w-4 text-wine-600" /> Free consultation & quote</p>
-          </div>
-        </div>
-
-        <div className="lg:col-span-3">
-          {done ? (
-            <div className="rounded-3xl bg-wine-700 text-cream-100 p-8 text-center animate-scale-in">
-              <Check className="h-10 w-10 mx-auto" />
-              <h3 className="mt-3 font-serif text-2xl font-semibold">Enquiry received</h3>
-              <p className="mt-2 text-cream-200/85 text-sm">
-                Thank you, {form.name || 'friend'}! Our team will reach out to you shortly.
-              </p>
-              <button
-                onClick={() => { setDone(false); setForm({ name: '', email: '', date: '', guests: '', notes: '' }); }}
-                className="mt-5 rounded-full bg-cream-100 px-5 py-2.5 text-sm font-semibold text-wine-700 hover:bg-cream-200 transition-colors"
-              >
-                Send another enquiry
-              </button>
-            </div>
-          ) : (
-            <form onSubmit={submit} className="rounded-3xl bg-cream-50 p-6 sm:p-8 shadow-card space-y-4">
-              <div className="grid sm:grid-cols-2 gap-4">
-                <Field icon={User} label="Full name">
-                  <input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="input" placeholder="Your name" />
-                </Field>
-                <Field icon={Mail} label="Email">
-                  <input required type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="input" placeholder="you@email.com" />
-                </Field>
-                <Field icon={Calendar} label="Event date">
-                  <input type="date" value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value })} className="input" />
-                </Field>
-                <Field icon={Phone} label="Approx. guests">
-                  <input value={form.guests} onChange={(e) => setForm({ ...form, guests: e.target.value })} className="input" placeholder="e.g. 80" />
-                </Field>
+        <div className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+          
+          {/* Left Column: Visuals & Details */}
+          <div className="lg:col-span-7 xl:col-span-8 flex flex-col gap-10">
+            
+            {/* Image Gallery */}
+            <div className="flex flex-col gap-4">
+              <div className="relative aspect-[4/3] sm:aspect-video rounded-3xl overflow-hidden shadow-sm border border-stone-100 bg-stone-50">
+                <img 
+                  src={gallery[activeImg]} 
+                  alt={serviceName} 
+                  className="h-full w-full object-cover transition-opacity duration-300" 
+                  key={activeImg} 
+                />
               </div>
-              <Field label="Notes">
-                <textarea value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} rows={3} className="input resize-none" placeholder="Tell us about your vision, venue, theme…" />
-              </Field>
-              <button
-                type="submit"
-                disabled={submitting}
-                className="w-full rounded-full bg-wine-700 px-6 py-3.5 text-sm font-semibold text-cream-100 shadow-soft hover:bg-wine-800 transition-colors active:scale-95 disabled:opacity-60"
-              >
-                {submitting ? 'Sending…' : 'Request a quote'}
-              </button>
-            </form>
-          )}
+              
+              {gallery.length > 1 && (
+                <div className="flex gap-3 overflow-x-auto pb-2 no-scrollbar">
+                  {gallery.map((g, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setActiveImg(i)}
+                      className={`relative h-20 w-24 sm:h-24 sm:w-32 rounded-xl overflow-hidden shrink-0 transition-all ${
+                        activeImg === i ? 'ring-2 ring-wine-700 ring-offset-2' : 'opacity-70 hover:opacity-100'
+                      }`}
+                    >
+                      <img src={g} alt="" className="h-full w-full object-cover" />
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Description */}
+            <section>
+              <h2 className="text-xl font-serif font-semibold text-wine-900 mb-4">About this service</h2>
+              <p className="text-base text-wine-900/70 leading-relaxed max-w-3xl">
+                {service.description}
+              </p>
+            </section>
+
+            {/* Features */}
+            {service.features && service.features.length > 0 && (
+              <section>
+                <h2 className="text-xl font-serif font-semibold text-wine-900 mb-4">What's included</h2>
+                <ul className="grid sm:grid-cols-2 gap-y-3 gap-x-6">
+                  {service.features.map((f, i) => (
+                    <li key={i} className="flex items-start gap-3 text-wine-900/80">
+                      <div className="mt-0.5 rounded-full bg-emerald-100/80 p-1 shrink-0 text-emerald-700">
+                        <Check className="h-3 w-3" strokeWidth={3} />
+                      </div>
+                      <span className="leading-snug">{f}</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
+
+          </div>
+
+          {/* Right Column: Sticky Sidebar with Pricing & Seller Info */}
+          <div className="lg:col-span-5 xl:col-span-4 lg:sticky lg:top-28 flex flex-col gap-6">
+            
+            {/* Pricing & Summary Card */}
+            <div className="rounded-3xl border border-stone-200 bg-white p-6 sm:p-8 shadow-card">
+              <div className="flex items-baseline gap-2 mb-6">
+                <span className="font-serif text-4xl font-bold text-wine-900">{formatPrice(service.price)}</span>
+              </div>
+
+              <div className="space-y-4 mb-8">
+                <div className="flex items-center gap-3 text-sm text-wine-900/80">
+                  <Clock className="h-5 w-5 text-wine-700/60 shrink-0" />
+                  <span><strong>Duration:</strong> {durationText}</span>
+                </div>
+                
+                <div className="flex items-center gap-3 text-sm text-wine-900/80">
+                  <Truck className="h-5 w-5 text-wine-700/60 shrink-0" />
+                  <span>
+                    <strong>Delivery:</strong> {service.delivery ? 'Setup & delivery included' : 'Self-pickup / On-site only'}
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-3 text-sm text-wine-900/80">
+                  {service.is_active ? (
+                    <>
+                      <CheckCircle2 className="h-5 w-5 text-emerald-600 shrink-0" />
+                      <span className="text-emerald-700 font-medium">Currently Available</span>
+                    </>
+                  ) : (
+                    <>
+                      <ShieldAlert className="h-5 w-5 text-stone-400 shrink-0" />
+                      <span className="text-stone-500 font-medium">Currently Unavailable</span>
+                    </>
+                  )}
+                </div>
+              </div>
+              
+              <div className="flex flex-col gap-3">
+                <button 
+                  disabled={!service.is_active}
+                  className="w-full rounded-full bg-wine-700 px-6 py-4 text-sm font-semibold text-cream-100 shadow-soft hover:bg-wine-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  onClick={() => {
+                    if (service.seller?.phone_number) {
+                      window.location.href = `tel:${service.seller.phone_number.replace(/\s+/g, '')}`;
+                    }
+                  }}
+                >
+                  <Phone className="h-4 w-4" /> 
+                  {service.is_active ? 'Call to Book' : 'Not Available'}
+                </button>
+                <button 
+                  disabled={!service.is_active}
+                  className="w-full rounded-full bg-white border border-stone-200 px-6 py-4 text-sm font-semibold text-wine-900 shadow-sm hover:bg-stone-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  onClick={() => {
+                    if (service.seller?.email) {
+                      window.location.href = `mailto:${service.seller.email}`;
+                    }
+                  }}
+                >
+                  <MessageCircle className="h-4 w-4 text-wine-700" /> 
+                  Send a Message
+                </button>
+              </div>
+            </div>
+
+            {/* Seller Profile Card */}
+            {service.seller && (
+              <div className="rounded-3xl border border-stone-200 bg-stone-50 p-6 sm:p-8">
+                <h3 className="text-sm font-semibold uppercase tracking-wider text-wine-900/50 mb-5">Provided By</h3>
+                
+                <div className="flex gap-4 items-center mb-5">
+                  <img 
+                    src={service.seller.profile_picture || 'https://images.unsplash.com/photo-1544928147-79a2dbc1f389?auto=format&fit=crop&w=150&q=80'} 
+                    alt={service.seller.name} 
+                    className="h-16 w-16 rounded-full object-cover shadow-sm bg-white" 
+                  />
+                  <div>
+                    <h4 className="font-serif text-lg font-semibold text-wine-900 flex items-center gap-1.5">
+                      {service.seller.name}
+                      {service.seller.verified && (
+                        <CheckCircle2 className="h-4 w-4 text-blue-600" aria-label="Verified Seller" />
+                      )}
+                    </h4>
+                    <p className="text-sm text-wine-900/60 mt-0.5 flex items-center gap-1">
+                      <MapPin className="h-3.5 w-3.5" /> {service.seller.general_location}
+                    </p>
+                  </div>
+                </div>
+
+                {service.seller.description && (
+                  <p className="text-sm text-wine-900/70 mb-2 leading-relaxed line-clamp-3">
+                    {service.seller.description}
+                  </p>
+                )}
+
+              </div>
+            )}
+
+          </div>
         </div>
       </div>
-
-      <style>{`
-        .input {
-          width: 100%;
-          border-radius: 0.75rem;
-          border: 1px solid rgba(123,1,30,0.15);
-          background: #fdfbf6;
-          padding: 0.7rem 1rem;
-          font-size: 0.875rem;
-          color: #4a0113;
-        }
-        .input:focus { outline: none; box-shadow: 0 0 0 2px rgba(123,1,30,0.25); }
-      `}</style>
     </div>
-  );
-}
-
-function Field({
-  icon: Icon, label, children,
-}: { icon?: React.ComponentType<{ className?: string }>; label: string; children: React.ReactNode }) {
-  return (
-    <label className="block">
-      <span className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-wine-900/60 mb-1.5">
-        {Icon && <Icon className="h-3.5 w-3.5" />} {label}
-      </span>
-      {children}
-    </label>
   );
 }

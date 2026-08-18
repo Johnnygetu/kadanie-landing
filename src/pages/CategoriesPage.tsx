@@ -32,7 +32,7 @@ export default function CategoriesPage() {
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
             {data.categories.map((c) => (
-              <CategoryCard key={c.id} category={c} />
+              <CategoryCard key={c.id} category={c} variant="image" />
             ))}
           </div>
         )}

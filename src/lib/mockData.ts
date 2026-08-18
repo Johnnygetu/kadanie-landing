@@ -1,4 +1,27 @@
-import type { Category, Item, Service, Course } from '@/types';
+import type { Category, Item, Service, Course, Seller } from '@/types';
+
+export const MOCK_SELLERS: Seller[] = [
+  {
+    id: 'sel-1',
+    name: 'Elegant Events & Styling',
+    email: 'hello@elegantevents.com',
+    phone_number: '+251 91 123 4567',
+    general_location: 'Bole, Addis Ababa',
+    profile_picture: 'https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&w=150&q=80',
+    description: 'We specialize in luxury wedding styling, corporate galas, and bespoke tablescapes.',
+    verified: true,
+  },
+  {
+    id: 'sel-2',
+    name: 'Balloons & Beyond',
+    email: 'info@balloonsbeyond.com',
+    phone_number: '+251 92 987 6543',
+    general_location: 'Kazanchis, Addis Ababa',
+    profile_picture: 'https://images.unsplash.com/photo-1622308643884-25e2197171d7?auto=format&fit=crop&w=150&q=80',
+    description: 'Addis Ababas premier balloon artists. From intimate birthdays to massive corporate installations.',
+    verified: true,
+  }
+];
 
 export const MOCK_CATEGORIES: Category[] = [
   {
@@ -46,12 +69,23 @@ export const MOCK_CATEGORIES: Category[] = [
     icon: 'Crown',
     created_at: '2025-01-05T00:00:00.000Z',
   },
+  {
+    id: 'cat-6',
+    name: 'Anniversaries & Engagements',
+    slug: 'anniversaries-engagements',
+    description: 'Intimate setting decor, neon signs, and romantic photo backdrops for special milestones.',
+    image_url: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1200&q=80',
+    icon: 'PartyPopper',
+    created_at: '2025-01-06T00:00:00.000Z',
+  },
 ];
 
 export const MOCK_ITEMS: (Item & { category: { id: string; slug: string; name: string } | null })[] = [
   {
     id: 'item-1',
     category_id: 'cat-1',
+    seller_id: 'sel-1',
+    seller: MOCK_SELLERS[0],
     name: 'Grand Royal Floral Arch',
     slug: 'grand-royal-floral-arch',
     description: 'Handcrafted white & blush rose arch with trailing lush eucalyptus, ideal for ceremony backdrop.',
@@ -71,6 +105,8 @@ export const MOCK_ITEMS: (Item & { category: { id: string; slug: string; name: s
   {
     id: 'item-2',
     category_id: 'cat-1',
+    seller_id: 'sel-2',
+    seller: MOCK_SELLERS[1],
     name: 'Champagne Velvet Chairs (Set of 6)',
     slug: 'champagne-velvet-chairs',
     description: 'Luxurious champagne velvet padded seating with refined gold steel legs for banquet VIP tables.',
@@ -87,6 +123,8 @@ export const MOCK_ITEMS: (Item & { category: { id: string; slug: string; name: s
   {
     id: 'item-3',
     category_id: 'cat-2',
+    seller_id: 'sel-2',
+    seller: MOCK_SELLERS[1],
     name: 'Organic Pastel Balloon Garland Kit',
     slug: 'pastel-balloon-garland',
     description: '120-piece premium matte chrome & pastel balloon arch kit with dual hand pump and assembly tape.',
@@ -103,6 +141,8 @@ export const MOCK_ITEMS: (Item & { category: { id: string; slug: string; name: s
   {
     id: 'item-4',
     category_id: 'cat-3',
+    seller_id: 'sel-1',
+    seller: MOCK_SELLERS[0],
     name: 'Golden Geometric Pedestals',
     slug: 'golden-geometric-pedestals',
     description: 'Sleek metallic gold geometric tall stands for floral arrangements or modern lighting display.',
@@ -119,6 +159,8 @@ export const MOCK_ITEMS: (Item & { category: { id: string; slug: string; name: s
   {
     id: 'item-5',
     category_id: 'cat-5',
+    seller_id: 'sel-1',
+    seller: MOCK_SELLERS[0],
     name: 'Crystal Candleholder Set',
     slug: 'crystal-candleholder-set',
     description: 'Hand-cut lead crystal taper candle holders with heat-resistant hurricane glass guards.',
@@ -135,6 +177,8 @@ export const MOCK_ITEMS: (Item & { category: { id: string; slug: string; name: s
   {
     id: 'item-6',
     category_id: 'cat-1',
+    seller_id: 'sel-1',
+    seller: MOCK_SELLERS[0],
     name: 'Celestial Fairy Light Canopy (30m)',
     slug: 'fairy-light-canopy',
     description: 'Warm white fairy curtain lights with waterproof wiring and dimmable remote controller.',
@@ -154,22 +198,33 @@ export const MOCK_SERVICES: (Service & { category: { id: string; slug: string; n
   {
     id: 'srv-1',
     category_id: 'cat-1',
+    seller_id: 'sel-1',
+    seller: MOCK_SELLERS[0],
+    service_name: 'Full-Service Signature Wedding Styling',
     name: 'Full-Service Signature Wedding Styling',
     slug: 'full-service-wedding-styling',
     description: 'Comprehensive end-to-end wedding design including ceremony arch, reception tables, lighting, and breakdown.',
     price: 1800,
+    duration_days: 1,
+    duration: '1 Day (12 hrs setup)',
+    main_image: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1200&q=80',
     image_url: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1200&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1653821355736-0c2598d0a63e?auto=format&fit=crop&w=1200&q=80',
+    ],
     gallery: [
       'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1200&q=80',
       'https://images.unsplash.com/photo-1653821355736-0c2598d0a63e?auto=format&fit=crop&w=1200&q=80',
     ],
+    delivery: true,
+    is_active: true,
     features: [
       'Custom moodboard & 3D render',
       'On-site lead stylist & 4 assistants',
       'Includes centerpieces, drapes, and lighting',
       'Post-event teardown & logistics',
     ],
-    duration: 'Full Event Day (12 hrs setup)',
     rating: 5.0,
     reviews_count: 84,
     tag: 'Most Requested',
@@ -179,19 +234,27 @@ export const MOCK_SERVICES: (Service & { category: { id: string; slug: string; n
   {
     id: 'srv-2',
     category_id: 'cat-2',
+    seller_id: 'sel-2',
+    seller: MOCK_SELLERS[1],
+    service_name: 'Luxury Birthday & Celebration Experience',
     name: 'Luxury Birthday & Celebration Experience',
     slug: 'luxury-birthday-setup',
     description: 'Bespoke themed photo backdrop, organic balloon sculpture, dessert table styling, and custom neon sign.',
     price: 650,
+    duration_days: 3,
+    duration: '3 Days',
+    main_image: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=1200&q=80',
     image_url: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=1200&q=80',
+    images: ['https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=1200&q=80'],
     gallery: ['https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=1200&q=80'],
+    delivery: true,
+    is_active: true,
     features: [
       'Custom neon message sign',
       'Organic balloon wall/arch',
       'Dessert pedestals & cake stand',
       'Color-matched linens & accents',
     ],
-    duration: '4 hours setup',
     rating: 4.9,
     reviews_count: 46,
     tag: 'Bestseller',
@@ -201,19 +264,27 @@ export const MOCK_SERVICES: (Service & { category: { id: string; slug: string; n
   {
     id: 'srv-3',
     category_id: 'cat-3',
+    seller_id: 'sel-1',
+    seller: MOCK_SELLERS[0],
+    service_name: 'Executive Corporate Gala & Stage Decor',
     name: 'Executive Corporate Gala & Stage Decor',
     slug: 'corporate-gala-styling',
     description: 'Sleek stage framing, branded backdrop installations, VIP table styling, and atmospheric ambient lighting.',
     price: 1400,
+    duration_days: 7,
+    duration: '7 Days',
+    main_image: 'https://images.unsplash.com/photo-1531058020387-3be344556be6?auto=format&fit=crop&w=1200&q=80',
     image_url: 'https://images.unsplash.com/photo-1531058020387-3be344556be6?auto=format&fit=crop&w=1200&q=80',
+    images: ['https://images.unsplash.com/photo-1531058020387-3be344556be6?auto=format&fit=crop&w=1200&q=80'],
     gallery: ['https://images.unsplash.com/photo-1531058020387-3be344556be6?auto=format&fit=crop&w=1200&q=80'],
+    delivery: false,
+    is_active: true,
     features: [
       'Custom logo integration',
       'Modular backdrop panels',
       'LED uplighting package',
       'VIP seating arrangement',
     ],
-    duration: '6 hours setup',
     rating: 4.8,
     reviews_count: 29,
     tag: 'Corporate Fav',

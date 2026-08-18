@@ -17,10 +17,9 @@ export default function Footer() {
     {
       title: 'Company',
       links: [
-        { label: 'About Kadanie', path: '/about' },
-        { label: 'Contact', path: '/about' },
-        { label: 'Our Courses', path: '/courses' },
         { label: 'Home', path: '/' },
+        { label: 'Our Courses', path: '/courses' },
+        { label: 'Services', path: '/services' },
       ],
     },
   ];

@@ -11,6 +11,8 @@ export type Category = {
 export type Item = {
   id: string;
   category_id: string | null;
+  seller_id?: string | number;
+  seller?: Seller;
   name: string;
   slug: string;
   description: string;
@@ -27,14 +29,22 @@ export type Item = {
 export type Service = {
   id: string;
   category_id: string | null;
-  name: string;
+  seller_id?: string | number;
+  seller?: Seller;
+  service_name: string;
+  name?: string; // fallback alias for backward compatibility
   slug: string;
   description: string;
   price: number;
-  image_url: string;
-  gallery: string[];
+  duration_days: number;
+  duration?: string; // formatted duration string helper
+  main_image: string;
+  image_url?: string; // fallback alias for cover photo
+  images?: string[]; // array of secondary gallery photo URLs
+  gallery?: string[]; // fallback alias for images
+  delivery: boolean; // boolean flag for delivery included / available
+  is_active: boolean; // flag indicating if service is active/offered
   features: string[];
-  duration: string;
   rating: number;
   reviews_count: number;
   tag: string;
@@ -47,6 +57,7 @@ export type Course = {
   slug: string;
   description: string;
   image_url: string;
+  video_url?: string;
   instructor: string;
   level: string;
   duration: string;
@@ -66,4 +77,17 @@ export type Registration = {
   phone: string;
   message: string;
   created_at: string;
+};
+
+export type Seller = {
+  id: string | number;
+  name: string;
+  email: string;
+  password?: string;
+  phone_number: string;
+  general_location: string;
+  profile_picture?: string | null;
+  description?: string | null;
+  verification_token?: string | null;
+  verified: boolean;
 };

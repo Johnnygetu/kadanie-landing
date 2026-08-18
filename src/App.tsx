@@ -10,7 +10,6 @@ import ServicesPage from '@/pages/ServicesPage';
 import ServiceDetailPage from '@/pages/ServiceDetailPage';
 import CoursesPage from '@/pages/CoursesPage';
 import CourseDetailPage from '@/pages/CourseDetailPage';
-import AboutPage from '@/pages/AboutPage';
 import NotFoundPage from '@/pages/NotFoundPage';
 
 export default function App() {
@@ -27,7 +26,6 @@ export default function App() {
   else if (path.startsWith('/services/')) page = <ServiceDetailPage slug={path.split('/')[2]} />;
   else if (path === '/courses') page = <CoursesPage />;
   else if (path.startsWith('/courses/')) page = <CourseDetailPage slug={path.split('/')[2]} />;
-  else if (path === '/about') page = <AboutPage />;
   else page = <NotFoundPage />;
 
   return (
