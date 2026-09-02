@@ -22,7 +22,7 @@ export default function ItemDetailPage({ slug }: { slug: string }) {
   const gallery = item.gallery.length ? item.gallery : [item.image_url];
 
   return (
-    <div className="pt-24 pb-20 bg-white min-h-screen">
+    <div className="pt-24 pb-20 bg-cream-200 min-h-screen">
       <div className="container-px max-w-6xl mx-auto">
         
         {/* Top Navigation */}
@@ -104,7 +104,10 @@ export default function ItemDetailPage({ slug }: { slug: string }) {
                 </ul>
               </section>
             )}
+          </div>
 
+          {/* Right Column: Actions */}
+          <div className="lg:col-span-5 xl:col-span-4 flex flex-col gap-6 lg:sticky lg:top-24">
             {/* Purchase / Action Card */}
             <div className="rounded-3xl border border-stone-200 bg-white p-6 sm:p-8 shadow-card">
               <div className="flex items-baseline gap-2 mb-2">
@@ -137,7 +140,6 @@ export default function ItemDetailPage({ slug }: { slug: string }) {
                 </button>
               </div>
             </div>
-
           </div>
         </div>
       </div>

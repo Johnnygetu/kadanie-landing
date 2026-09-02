@@ -48,6 +48,7 @@ export type Service = {
   rating: number;
   reviews_count: number;
   tag: string;
+  location?: string;
   created_at: string;
 };
 

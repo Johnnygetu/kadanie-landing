@@ -42,7 +42,7 @@ export default function CategoriesPage() {
       <section className="mt-24">
         <div className="flex flex-wrap items-end justify-between gap-4 mb-10">
           <SectionHeading
-            eyebrow="Kadanie Academy"
+            eyebrow="Kadanie Courses"
             title="Courses"
             subtitle="Learn the craft of decoration from working professionals — project-based, with kits and certificates."
           />

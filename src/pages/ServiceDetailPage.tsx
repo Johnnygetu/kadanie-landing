@@ -28,7 +28,7 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
     : service.duration || 'Flexible duration';
 
   return (
-    <div className="pt-24 pb-20 bg-white min-h-screen">
+    <div className="pt-24 pb-20 bg-cream-200 min-h-screen">
       <div className="container-px max-w-6xl mx-auto">
         
         {/* Top Navigation */}

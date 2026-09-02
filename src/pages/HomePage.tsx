@@ -38,7 +38,7 @@ export default function HomePage() {
   });
 
   return (
-    <div className="pt-24 pb-20 bg-cream-50 min-h-screen">
+    <div className="pt-24 pb-20 bg-cream-200 min-h-screen">
       <div className="container-px max-w-7xl mx-auto">
         
         {/* Search Section */}
@@ -105,8 +105,8 @@ export default function HomePage() {
               </button>
             </div>
           ) : (
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {filteredItems.slice(0, 8).map((it) => (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredItems.slice(0, 6).map((it) => (
                 <ItemCard key={it.id} item={it} />
               ))}
             </div>
@@ -121,8 +121,8 @@ export default function HomePage() {
               View all <ArrowRight className="h-4 w-4" />
             </button>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {data.services.slice(0, 8).map((s) => (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {data.services.slice(0, 6).map((s) => (
               <ServiceCard key={s.id} service={s} />
             ))}
           </div>
@@ -136,23 +136,23 @@ export default function HomePage() {
               View all <ArrowRight className="h-4 w-4" />
             </button>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {data.items.slice(0, 8).map((it) => (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {data.items.slice(0, 6).map((it) => (
               <ItemCard key={it.id} item={it} />
             ))}
           </div>
         </div>
 
-        {/* Kadanie Academy */}
+        {/* Kadanie Courses */}
         <div className="mb-16">
           <div className="flex items-center justify-between mb-5">
-            <h2 className="font-serif text-2xl font-semibold text-wine-900">Kadanie Academy</h2>
+            <h2 className="font-serif text-2xl font-semibold text-wine-900">Kadanie Courses</h2>
             <button onClick={() => navigate('/courses')} className="text-sm font-semibold text-wine-700 hover:underline inline-flex items-center gap-1">
               View all <ArrowRight className="h-4 w-4" />
             </button>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {data.courses.slice(0, 8).map((c) => (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {data.courses.slice(0, 6).map((c) => (
               <CourseCard key={c.id} course={c} />
             ))}
           </div>

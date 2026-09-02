@@ -219,6 +219,7 @@ export const MOCK_SERVICES: (Service & { category: { id: string; slug: string; n
     ],
     delivery: true,
     is_active: true,
+    location: 'Bole, Addis Ababa',
     features: [
       'Custom moodboard & 3D render',
       'On-site lead stylist & 4 assistants',
@@ -249,6 +250,7 @@ export const MOCK_SERVICES: (Service & { category: { id: string; slug: string; n
     gallery: ['https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=1200&q=80'],
     delivery: true,
     is_active: true,
+    location: 'Kazanchis, Addis Ababa',
     features: [
       'Custom neon message sign',
       'Organic balloon wall/arch',
@@ -279,6 +281,7 @@ export const MOCK_SERVICES: (Service & { category: { id: string; slug: string; n
     gallery: ['https://images.unsplash.com/photo-1531058020387-3be344556be6?auto=format&fit=crop&w=1200&q=80'],
     delivery: false,
     is_active: true,
+    location: 'Addis Ababa (Mobile Service)',
     features: [
       'Custom logo integration',
       'Modular backdrop panels',

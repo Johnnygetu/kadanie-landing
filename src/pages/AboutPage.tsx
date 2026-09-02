@@ -23,7 +23,7 @@ export default function AboutPage() {
             <p>
               What started as a small studio styling friends' weddings has grown into a full
               decoration house — curating items, designing services, and teaching the next
-              generation of stylists through Kadanie Academy.
+              generation of stylists through Kadanie Courses.
             </p>
             <p>
               We believe decor is more than beautiful objects. It's the feeling of walking into a
