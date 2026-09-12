@@ -5,6 +5,7 @@ import { useNavigate } from '@/lib/router';
 
 export default function ItemCard({ item }: { item: Item }) {
   const navigate = useNavigate();
+  const isFeatured = (item.tag || '').trim().toLowerCase() === 'featured';
 
   return (
     <button
@@ -19,9 +20,9 @@ export default function ItemCard({ item }: { item: Item }) {
           className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
         />
         <div className="absolute top-3 left-3 flex flex-col gap-1.5 items-start">
-          {item.tag && (
+          {isFeatured && (
             <span className="rounded-full bg-wine-700/90 backdrop-blur-md px-3 py-1 text-[10px] font-bold tracking-wider text-cream-100 shadow-sm uppercase">
-              {item.tag}
+              Featured
             </span>
           )}
         </div>

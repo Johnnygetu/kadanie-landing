@@ -39,17 +39,17 @@ export default function Header() {
   return (
     <header
       className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
-        scrolled ? 'bg-cream-200/95 backdrop-blur-md shadow-soft' : 'bg-transparent'
+        scrolled ? 'bg-wine-700/95 backdrop-blur-md shadow-soft' : 'bg-wine-700'
       }`}
     >
       <div className="container-px max-w-7xl mx-auto">
         <div className="flex items-center justify-between h-20">
           <button onClick={() => go('/')} className="flex items-center gap-2.5 group">
-            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-wine-700 text-cream-100 shadow-soft transition-transform group-hover:scale-105">
+            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-cream-100 text-wine-700 shadow-soft transition-transform group-hover:scale-105">
               <Sparkles className="h-5 w-5" />
             </span>
-            <span className="font-serif text-xl font-semibold tracking-wide text-wine-800">
-              Kadanie <span className="text-wine-500">Decore</span>
+            <span className="font-serif text-xl font-semibold tracking-wide text-cream-100">
+              Kadanie <span className="text-cream-200/90">Décor & Events</span>
             </span>
           </button>
 
@@ -61,12 +61,14 @@ export default function Header() {
                   key={l.path}
                   onClick={() => go(l.path)}
                   className={`relative px-4 py-2 text-sm font-medium transition-colors rounded-full ${
-                    active ? 'text-wine-700' : 'text-wine-900/70 hover:text-wine-700'
+                    active
+                      ? 'text-white font-semibold'
+                      : 'text-cream-50 hover:text-white hover:bg-white/10'
                   }`}
                 >
                   {l.label}
                   {active && (
-                    <span className="absolute inset-x-4 -bottom-0.5 h-0.5 rounded-full bg-wine-600" />
+                    <span className="absolute inset-x-4 -bottom-0.5 h-0.5 rounded-full bg-white shadow-sm" />
                   )}
                 </button>
               );
@@ -76,7 +78,7 @@ export default function Header() {
           <div className="hidden md:block">
             <button
               onClick={() => go('/courses')}
-              className="rounded-full bg-wine-700 px-5 py-2.5 text-sm font-semibold text-cream-100 shadow-soft transition-all hover:bg-wine-800 hover:shadow-lg active:scale-95"
+              className="rounded-full bg-cream-100 px-5 py-2.5 text-sm font-semibold text-wine-700 shadow-soft transition-all hover:bg-white hover:shadow-lg active:scale-95"
             >
               Book a Course
             </button>
@@ -84,7 +86,7 @@ export default function Header() {
 
           <button
             onClick={() => setOpen((v) => !v)}
-            className="md:hidden flex h-10 w-10 items-center justify-center rounded-full text-wine-800 hover:bg-wine-700/10"
+            className="md:hidden flex h-10 w-10 items-center justify-center rounded-full text-cream-100 hover:bg-wine-800"
             aria-label="Menu"
           >
             {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -94,7 +96,7 @@ export default function Header() {
 
       {/* Mobile menu */}
       <div
-        className={`md:hidden overflow-hidden transition-all duration-300 bg-cream-200 border-t border-wine-700/10 ${
+        className={`md:hidden overflow-hidden transition-all duration-300 bg-wine-700 border-t border-wine-800 ${
           open ? 'max-h-96' : 'max-h-0'
         }`}
       >
@@ -103,14 +105,14 @@ export default function Header() {
             <button
               key={l.path}
               onClick={() => go(l.path)}
-              className="text-left px-4 py-3 rounded-xl text-wine-900 font-medium hover:bg-wine-700/10 transition-colors"
+              className="text-left px-4 py-3 rounded-xl text-white font-medium hover:bg-wine-800 transition-colors"
             >
               {l.label}
             </button>
           ))}
           <button
             onClick={() => go('/courses')}
-            className="mt-2 rounded-xl bg-wine-700 px-4 py-3 text-center font-semibold text-cream-100"
+            className="mt-2 rounded-xl bg-cream-100 px-4 py-3 text-center font-semibold text-wine-700"
           >
             Book a Course
           </button>

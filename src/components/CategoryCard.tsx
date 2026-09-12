@@ -6,10 +6,20 @@ export default function CategoryCard({ category, variant = 'icon' }: { category:
   const navigate = useNavigate();
   const Icon = (Icons as unknown as Record<string, Icons.LucideIcon>)[category.icon] ?? Icons.Sparkles;
 
+  const handleClick = () => {
+    if (category.slug === 'kadanie-academy') {
+      navigate('/courses');
+    } else if (category.slug === 'kadanie-store') {
+      navigate('/items');
+    } else {
+      navigate(`/categories/${category.slug}`);
+    }
+  };
+
   if (variant === 'image') {
     return (
       <button
-        onClick={() => navigate(`/categories/${category.slug}`)}
+        onClick={handleClick}
         className="group relative overflow-hidden rounded-2xl aspect-[4/3] shadow-card hover:shadow-soft transition-all duration-300 hover:-translate-y-1 text-left"
       >
         <img
@@ -34,7 +44,7 @@ export default function CategoryCard({ category, variant = 'icon' }: { category:
 
   return (
     <button
-      onClick={() => navigate(`/categories/${category.slug}`)}
+      onClick={handleClick}
       className="group flex flex-col items-center justify-center p-4 text-center bg-white border border-wine-700/10 rounded-xl shadow-sm hover:shadow-soft hover:border-wine-700/30 transition-all duration-300 hover:-translate-y-1"
     >
       <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-cream-100 text-wine-700 mb-2.5 transition-transform group-hover:scale-110">

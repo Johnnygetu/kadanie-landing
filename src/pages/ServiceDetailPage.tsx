@@ -1,9 +1,11 @@
 import { useState } from 'react';
-import { ArrowLeft, Check, Clock, Phone, User, Truck, CheckCircle2, ShieldAlert, MessageCircle, MapPin } from 'lucide-react';
+import { ArrowLeft, Clock, Phone, CheckCircle2, MapPin } from 'lucide-react';
 import { useAsync } from '@/lib/useAsync';
 import { useNavigate } from '@/lib/router';
 import { MOCK_SERVICES } from '@/lib/mockData';
 import { formatPrice } from '@/lib/format';
+import { getTelegramUrl } from '@/lib/telegram';
+import { TelegramIcon } from '@/components/TelegramIcon';
 import { Spinner, ErrorState } from '@/components/States';
 
 export default function ServiceDetailPage({ slug }: { slug: string }) {
@@ -87,29 +89,13 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
             </div>
 
             {/* Description */}
-            <section>
+            <section className="rounded-3xl border border-stone-200 bg-white/80 p-6 shadow-sm">
               <h2 className="text-xl font-serif font-semibold text-wine-900 mb-4">About this service</h2>
-              <p className="text-base text-wine-900/70 leading-relaxed max-w-3xl">
+              <p className="min-h-[180px] text-base sm:text-lg text-wine-900/75 leading-8 max-w-3xl">
                 {service.description}
               </p>
             </section>
 
-            {/* Features */}
-            {service.features && service.features.length > 0 && (
-              <section>
-                <h2 className="text-xl font-serif font-semibold text-wine-900 mb-4">What's included</h2>
-                <ul className="grid sm:grid-cols-2 gap-y-3 gap-x-6">
-                  {service.features.map((f, i) => (
-                    <li key={i} className="flex items-start gap-3 text-wine-900/80">
-                      <div className="mt-0.5 rounded-full bg-emerald-100/80 p-1 shrink-0 text-emerald-700">
-                        <Check className="h-3 w-3" strokeWidth={3} />
-                      </div>
-                      <span className="leading-snug">{f}</span>
-                    </li>
-                  ))}
-                </ul>
-              </section>
-            )}
 
           </div>
 
@@ -128,53 +114,45 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
                   <span><strong>Duration:</strong> {durationText}</span>
                 </div>
                 
-                <div className="flex items-center gap-3 text-sm text-wine-900/80">
-                  <Truck className="h-5 w-5 text-wine-700/60 shrink-0" />
-                  <span>
-                    <strong>Delivery:</strong> {service.delivery ? 'Setup & delivery included' : 'Self-pickup / On-site only'}
-                  </span>
-                </div>
 
-                <div className="flex items-center gap-3 text-sm text-wine-900/80">
-                  {service.is_active ? (
-                    <>
-                      <CheckCircle2 className="h-5 w-5 text-emerald-600 shrink-0" />
-                      <span className="text-emerald-700 font-medium">Currently Available</span>
-                    </>
-                  ) : (
-                    <>
-                      <ShieldAlert className="h-5 w-5 text-stone-400 shrink-0" />
-                      <span className="text-stone-500 font-medium">Currently Unavailable</span>
-                    </>
-                  )}
-                </div>
               </div>
               
               <div className="flex flex-col gap-3">
                 <button 
                   disabled={!service.is_active}
-                  className="w-full rounded-full bg-wine-700 px-6 py-4 text-sm font-semibold text-cream-100 shadow-soft hover:bg-wine-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  className="w-full rounded-full bg-wine-700 px-5 py-4 text-sm font-semibold text-cream-100 shadow-soft hover:bg-wine-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-center"
                   onClick={() => {
                     if (service.seller?.phone_number) {
                       window.location.href = `tel:${service.seller.phone_number.replace(/\s+/g, '')}`;
                     }
                   }}
                 >
-                  <Phone className="h-4 w-4" /> 
-                  {service.is_active ? 'Call to Book' : 'Not Available'}
+                  <Phone className="h-4 w-4 shrink-0" /> 
+                  <span>
+                    {service.is_active 
+                      ? (service.seller?.phone_number || 'Call')
+                      : 'Not Available'}
+                  </span>
                 </button>
-                <button 
-                  disabled={!service.is_active}
-                  className="w-full rounded-full bg-white border border-stone-200 px-6 py-4 text-sm font-semibold text-wine-900 shadow-sm hover:bg-stone-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                  onClick={() => {
-                    if (service.seller?.email) {
-                      window.location.href = `mailto:${service.seller.email}`;
-                    }
-                  }}
-                >
-                  <MessageCircle className="h-4 w-4 text-wine-700" /> 
-                  Send a Message
-                </button>
+                {service.is_active ? (
+                  <a 
+                    href={getTelegramUrl(service.seller?.telegram, service.seller?.phone_number)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full rounded-full bg-white border border-stone-200 px-6 py-4 text-sm font-semibold text-wine-900 shadow-sm hover:bg-stone-50 hover:border-[#229ED9]/50 transition-all flex items-center justify-center gap-2 text-center group"
+                  >
+                    <TelegramIcon className="h-4 w-4 text-[#229ED9] group-hover:scale-110 transition-transform shrink-0" /> 
+                    <span>Telegram Message</span>
+                  </a>
+                ) : (
+                  <button 
+                    disabled
+                    className="w-full rounded-full bg-white border border-stone-200 px-6 py-4 text-sm font-semibold text-wine-900 shadow-sm opacity-50 cursor-not-allowed flex items-center justify-center gap-2"
+                  >
+                    <TelegramIcon className="h-4 w-4 text-stone-400 shrink-0" /> 
+                    <span>Telegram Message</span>
+                  </button>
+                )}
               </div>
             </div>
 
@@ -199,6 +177,17 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
                     <p className="text-sm text-wine-900/60 mt-0.5 flex items-center gap-1">
                       <MapPin className="h-3.5 w-3.5" /> {service.seller.general_location}
                     </p>
+                    {service.seller.telegram && (
+                      <a
+                        href={getTelegramUrl(service.seller.telegram, service.seller.phone_number)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs text-[#229ED9] hover:underline mt-1 flex items-center gap-1 font-medium"
+                      >
+                        <TelegramIcon className="h-3 w-3" />
+                        <span>@{service.seller.telegram.replace(/^@/, '')}</span>
+                      </a>
+                    )}
                   </div>
                 </div>
 

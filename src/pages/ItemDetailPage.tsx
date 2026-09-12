@@ -1,9 +1,11 @@
 import { useState } from 'react';
-import { ArrowLeft, Check, Phone, MessageCircle } from 'lucide-react';
+import { ArrowLeft, Phone, MapPin, CheckCircle2 } from 'lucide-react';
 import { useAsync } from '@/lib/useAsync';
 import { useNavigate } from '@/lib/router';
 import { MOCK_ITEMS } from '@/lib/mockData';
 import { formatPrice } from '@/lib/format';
+import { getTelegramUrl } from '@/lib/telegram';
+import { TelegramIcon } from '@/components/TelegramIcon';
 import { Spinner, ErrorState } from '@/components/States';
 
 export default function ItemDetailPage({ slug }: { slug: string }) {
@@ -81,29 +83,13 @@ export default function ItemDetailPage({ slug }: { slug: string }) {
             </div>
 
             {/* Description */}
-            <section>
+            <section className="rounded-3xl border border-stone-200 bg-white/80 p-6 shadow-sm">
               <h2 className="text-xl font-serif font-semibold text-wine-900 mb-4">About this item</h2>
-              <p className="text-base text-wine-900/70 leading-relaxed max-w-3xl">
+              <p className="min-h-[180px] text-base sm:text-lg text-wine-900/75 leading-8 max-w-3xl">
                 {item.description}
               </p>
             </section>
 
-            {/* Features */}
-            {item.features && item.features.length > 0 && (
-              <section>
-                <h2 className="text-xl font-serif font-semibold text-wine-900 mb-4">Product details</h2>
-                <ul className="grid sm:grid-cols-2 gap-y-3 gap-x-6">
-                  {item.features.map((f, i) => (
-                    <li key={i} className="flex items-start gap-3 text-wine-900/80">
-                      <div className="mt-0.5 rounded-full bg-stone-100 p-1 shrink-0 text-wine-700">
-                        <Check className="h-3 w-3" strokeWidth={3} />
-                      </div>
-                      <span className="leading-snug">{f}</span>
-                    </li>
-                  ))}
-                </ul>
-              </section>
-            )}
           </div>
 
           {/* Right Column: Actions */}
@@ -117,29 +103,71 @@ export default function ItemDetailPage({ slug }: { slug: string }) {
 
               <div className="flex flex-col gap-3">
                 <button 
-                  className="w-full rounded-full bg-wine-700 px-6 py-4 text-sm font-semibold text-cream-100 shadow-soft hover:bg-wine-800 transition-colors flex items-center justify-center gap-2"
+                  className="w-full rounded-full bg-wine-700 px-5 py-4 text-sm font-semibold text-cream-100 shadow-soft hover:bg-wine-800 transition-colors flex items-center justify-center gap-2 text-center"
                   onClick={() => {
                     if (item.seller?.phone_number) {
                       window.location.href = `tel:${item.seller.phone_number.replace(/\s+/g, '')}`;
                     }
                   }}
                 >
-                  <Phone className="h-4 w-4" /> 
-                  Call to Order
+                  <Phone className="h-4 w-4 shrink-0" /> 
+                  <span>{item.seller?.phone_number || 'Call'}</span>
                 </button>
-                <button 
-                  className="w-full rounded-full bg-white border border-stone-200 px-6 py-4 text-sm font-semibold text-wine-900 shadow-sm hover:bg-stone-50 transition-colors flex items-center justify-center gap-2"
-                  onClick={() => {
-                    if (item.seller?.email) {
-                      window.location.href = `mailto:${item.seller.email}`;
-                    }
-                  }}
+                <a 
+                  href={getTelegramUrl(item.seller?.telegram, item.seller?.phone_number)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full rounded-full bg-white border border-stone-200 px-6 py-4 text-sm font-semibold text-wine-900 shadow-sm hover:bg-stone-50 hover:border-[#229ED9]/50 transition-all flex items-center justify-center gap-2 text-center group"
                 >
-                  <MessageCircle className="h-4 w-4 text-wine-700" /> 
-                  Send a Message
-                </button>
+                  <TelegramIcon className="h-4 w-4 text-[#229ED9] group-hover:scale-110 transition-transform shrink-0" /> 
+                  <span>Telegram Message</span>
+                </a>
               </div>
             </div>
+
+            {/* Seller Profile Card */}
+            {item.seller && (
+              <div className="rounded-3xl border border-stone-200 bg-stone-50 p-6 sm:p-8">
+                <h3 className="text-sm font-semibold uppercase tracking-wider text-wine-900/50 mb-5">Sold By</h3>
+                
+                <div className="flex gap-4 items-center mb-5">
+                  <img 
+                    src={item.seller.profile_picture || 'https://images.unsplash.com/photo-1544928147-79a2dbc1f389?auto=format&fit=crop&w=150&q=80'} 
+                    alt={item.seller.name} 
+                    className="h-16 w-16 rounded-full object-cover shadow-sm bg-white" 
+                  />
+                  <div>
+                    <h4 className="font-serif text-lg font-semibold text-wine-900 flex items-center gap-1.5">
+                      {item.seller.name}
+                      {item.seller.verified && (
+                        <CheckCircle2 className="h-4 w-4 text-blue-600" aria-label="Verified Seller" />
+                      )}
+                    </h4>
+                    <p className="text-sm text-wine-900/60 mt-0.5 flex items-center gap-1">
+                      <MapPin className="h-3.5 w-3.5" /> {item.seller.general_location}
+                    </p>
+                    {item.seller.telegram && (
+                      <a
+                        href={getTelegramUrl(item.seller.telegram, item.seller.phone_number)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs text-[#229ED9] hover:underline mt-1 flex items-center gap-1 font-medium"
+                      >
+                        <TelegramIcon className="h-3 w-3" />
+                        <span>@{item.seller.telegram.replace(/^@/, '')}</span>
+                      </a>
+                    )}
+                  </div>
+                </div>
+
+                {item.seller.description && (
+                  <p className="text-sm text-wine-900/70 mb-2 leading-relaxed line-clamp-3">
+                    {item.seller.description}
+                  </p>
+                )}
+              </div>
+            )}
+
           </div>
         </div>
       </div>

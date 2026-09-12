@@ -34,7 +34,7 @@ export default function Footer() {
                 <Sparkles className="h-5 w-5" />
               </span>
               <span className="font-serif text-xl font-semibold text-cream-100">
-                Kadanie Decore
+                Kadanie Décor & Events
               </span>
             </div>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-cream-200/80">

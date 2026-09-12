@@ -38,24 +38,21 @@ export default function CourseDetailPage({ slug }: { slug: string }) {
       accountName: 'Daniel Wodajo',
       accountNumber: '1000 4892 3410 8',
       type: 'Bank Transfer',
-      icon: Building2,
-      badge: 'Most Popular'
+      icon: Building2
     },
     {
       bank: 'Telebirr',
       accountName: 'Daniel Wodajo',
       accountNumber: '0911 234 567',
       type: 'Mobile Wallet',
-      icon: Smartphone,
-      badge: 'Instant Transfer'
+      icon: Smartphone
     },
     {
       bank: 'Bank of Abyssinia',
       accountName: 'Daniel Wodajo',
       accountNumber: '8912 3041 2001 9',
       type: 'Bank Transfer',
-      icon: CreditCard,
-      badge: 'Fast Clearance'
+      icon: CreditCard
     }
   ];
 
@@ -87,9 +84,6 @@ export default function CourseDetailPage({ slug }: { slug: string }) {
           <h1 className="font-serif text-3xl sm:text-5xl font-semibold text-wine-900 tracking-tight leading-tight">
             {course.title}
           </h1>
-          <p className="mt-3 text-base text-wine-900/70 max-w-3xl leading-relaxed">
-            {course.description}
-          </p>
         </div>
 
         {/* 1. INTRODUCTION VIDEO SECTION (AT THE TOP) */}
@@ -140,6 +134,13 @@ export default function CourseDetailPage({ slug }: { slug: string }) {
               />
             )}
           </div>
+
+          <div className="mt-5 rounded-2xl border border-wine-900/10 bg-white/70 p-5 shadow-sm">
+            <h3 className="mb-2 font-serif text-xl font-semibold text-wine-900">About this course</h3>
+            <p className="text-base text-wine-900/70 leading-relaxed">
+              {course.description}
+            </p>
+          </div>
         </div>
 
         {/* 2. PAYMENT & ENROLLMENT SECTION (REDESIGNED SENIOR UI/UX) */}
@@ -163,15 +164,9 @@ export default function CourseDetailPage({ slug }: { slug: string }) {
             </div>
 
             {/* Price Badge */}
-            <div className="shrink-0 flex items-center gap-3 bg-wine-950 text-cream-100 px-5 py-3.5 rounded-2xl shadow-md border border-wine-800">
-              <div>
-                <span className="block text-[11px] uppercase tracking-wider text-cream-200/60 font-medium">Total Investment</span>
-                <span className="font-serif text-2xl font-bold text-cream-100">{formatPrice(course.price)}</span>
-              </div>
-              <div className="h-8 w-px bg-wine-800 mx-1" />
-              <span className="text-xs text-emerald-400 font-semibold flex items-center gap-1 bg-emerald-950/60 border border-emerald-500/30 px-2.5 py-1 rounded-full">
-                <CheckCircle2 className="h-3.5 w-3.5" /> Full Access
-              </span>
+            <div className="shrink-0 bg-wine-950 text-cream-100 px-5 py-3.5 rounded-2xl shadow-md border border-wine-800">
+              <span className="block text-[11px] uppercase tracking-wider text-cream-200/60 font-medium">Total Investment</span>
+              <span className="font-serif text-2xl font-bold text-cream-100">{formatPrice(course.price)}</span>
             </div>
           </div>
 
@@ -225,14 +220,7 @@ export default function CourseDetailPage({ slug }: { slug: string }) {
                             <AccIcon className="h-5 w-5" />
                           </div>
                           <div>
-                            <div className="flex items-center gap-2">
-                              <p className="font-semibold text-wine-950 text-sm sm:text-base">{acc.bank}</p>
-                              {acc.badge && (
-                                <span className="px-2 py-0.5 rounded-md bg-wine-100 text-wine-800 text-[10px] font-bold tracking-wide uppercase">
-                                  {acc.badge}
-                                </span>
-                              )}
-                            </div>
+                            <p className="font-semibold text-wine-950 text-sm sm:text-base">{acc.bank}</p>
                             <p className="text-xs text-wine-900/60 mt-0.5">
                               Account Name: <span className="font-medium text-wine-900">{acc.accountName}</span>
                             </p>

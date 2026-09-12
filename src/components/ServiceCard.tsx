@@ -7,6 +7,7 @@ export default function ServiceCard({ service }: { service: Service }) {
   const navigate = useNavigate();
   const displayName = service.service_name || service.name || 'Service Package';
   const displayImage = service.main_image || service.image_url || '';
+  const isFeatured = (service.tag || '').trim().toLowerCase() === 'featured';
 
   return (
     <button
@@ -21,9 +22,9 @@ export default function ServiceCard({ service }: { service: Service }) {
           className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
         />
         <div className="absolute top-3 left-3 flex flex-col gap-1.5 items-start">
-          {service.tag && (
+          {isFeatured && (
             <span className="rounded-full bg-wine-700/90 backdrop-blur-md px-3 py-1 text-[10px] font-bold tracking-wider text-cream-100 shadow-sm uppercase">
-              {service.tag}
+              Featured
             </span>
           )}
           {service.is_active === false && (

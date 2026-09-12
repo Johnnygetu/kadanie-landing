@@ -2,11 +2,12 @@ import { useState } from 'react';
 import { ArrowRight, Search, SlidersHorizontal, Sparkles } from 'lucide-react';
 import { useAsync } from '@/lib/useAsync';
 import { useNavigate } from '@/lib/router';
-import { MOCK_CATEGORIES, MOCK_ITEMS, MOCK_SERVICES, MOCK_COURSES } from '@/lib/mockData';
+import { MOCK_CATEGORIES, MOCK_ITEMS, MOCK_SERVICES, MOCK_COURSES, MOCK_SELLERS } from '@/lib/mockData';
 import CategoryCard from '@/components/CategoryCard';
 import ItemCard from '@/components/ItemCard';
 import ServiceCard from '@/components/ServiceCard';
 import CourseCard from '@/components/CourseCard';
+import SellerCard from '@/components/SellerCard';
 import { Spinner, ErrorState } from '@/components/States';
 
 export default function HomePage() {
@@ -21,6 +22,7 @@ export default function HomePage() {
       items: allItems,
       services: MOCK_SERVICES,
       courses: MOCK_COURSES,
+      sellers: MOCK_SELLERS,
     };
   }, []);
 
@@ -36,6 +38,9 @@ export default function HomePage() {
     }
     return true;
   });
+
+  const featuredCategorySlugs = ['decor', 'flowers', 'rental', 'event-organizer', 'kadanie-academy', 'kadanie-store'];
+  const homeCategories = data.categories.filter((c) => featuredCategorySlugs.includes(c.slug));
 
   return (
     <div className="pt-24 pb-20 bg-cream-200 min-h-screen">
@@ -70,8 +75,8 @@ export default function HomePage() {
             </button>
           </div>
           <div className="grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-4">
-            {data.categories.map((c) => (
-              <CategoryCard key={c.id} category={c} />
+            {homeCategories.map((c) => (
+              <CategoryCard key={c.id} category={c} variant="image" />
             ))}
           </div>
         </div>
@@ -112,6 +117,20 @@ export default function HomePage() {
             </div>
           )}
         </div>
+
+        {/* Featured Sellers */}
+        {!q && data.sellers.length > 0 && (
+          <div className="mb-16">
+            <div className="flex items-center justify-between mb-5">
+              <h2 className="font-serif text-2xl font-semibold text-wine-900">Featured Sellers</h2>
+            </div>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {data.sellers.slice(0, 3).map((seller) => (
+                <SellerCard key={seller.id} seller={seller} />
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* All Services */}
         <div className="mb-16">

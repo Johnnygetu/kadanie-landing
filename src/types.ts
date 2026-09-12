@@ -86,6 +86,7 @@ export type Seller = {
   email: string;
   password?: string;
   phone_number: string;
+  telegram?: string;
   general_location: string;
   profile_picture?: string | null;
   description?: string | null;

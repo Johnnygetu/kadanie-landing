@@ -11,7 +11,7 @@ export default function AboutPage() {
         <SectionHeading
           eyebrow="Our story"
           title="Decor with a heartbeat"
-          subtitle="Kadanie Decore began with a simple belief — that every celebration deserves a space that feels truly yours."
+          subtitle="Kadanie Décor & Events began with a simple belief — that every celebration deserves a space that feels truly yours."
           align="center"
         />
 
