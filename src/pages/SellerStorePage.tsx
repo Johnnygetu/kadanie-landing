@@ -19,7 +19,7 @@ export default function SellerStorePage({ id }: { id: string }) {
     return { seller, services };
   }, [id]);
 
-  if (loading) return <Spinner />;
+  if (loading) return <Spinner />;  
   if (error || !data) return <ErrorState message={error ?? 'Could not load seller.'} />;
 
   const { seller, services } = data;
